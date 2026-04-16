@@ -1,0 +1,666 @@
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+--ct-bg:#0e0e0c;--ct-surface:#161612;--ct-border:#2a2820;
+--ct-gold:#c8a96e;--ct-cream:#e8dcc8;--ct-muted:#5a5040;--ct-dim:#3a3428;
+}
+#ct-site{width:100%;background:var(--ct-bg);color:var(--ct-cream);font-family:'DM Sans',sans-serif;}
+.ct-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;border-bottom:.5px solid var(--ct-border);}
+.ct-nav-logo{font-family:'Playfair Display',serif;font-size:16px;color:var(--ct-cream);letter-spacing:.04em;}
+.ct-nav-links{display:flex;gap:24px;}
+.ct-nav-link{font-size:11px;color:var(--ct-muted);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:color .15s;}
+.ct-nav-link:hover{color:var(--ct-gold);}
+.ct-nav-cta{font-size:11px;color:var(--ct-bg);background:var(--ct-gold);padding:7px 16px;border-radius:20px;cursor:pointer;letter-spacing:.06em;transition:opacity .15s;}
+.ct-nav-cta:hover{opacity:.85;}
+
+.ct-hero{padding:80px 32px 64px;position:relative;overflow:hidden;border-bottom:.5px solid var(--ct-border);}
+.ct-hero-eyebrow{font-size:10px;color:var(--ct-gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;}
+.ct-hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,64px);color:var(--ct-cream);line-height:1.08;max-width:700px;margin-bottom:24px;}
+.ct-hero-title em{font-style:italic;color:var(--ct-gold);}
+.ct-hero-sub{font-size:15px;color:var(--ct-muted);line-height:1.7;max-width:480px;margin-bottom:40px;}
+.ct-hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.ct-btn-primary{font-size:12px;color:var(--ct-bg);background:var(--ct-gold);padding:12px 24px;border-radius:24px;cursor:pointer;letter-spacing:.06em;border:none;transition:opacity .15s;font-family:'DM Sans',sans-serif;}
+.ct-btn-primary:hover{opacity:.85;}
+.ct-btn-ghost{font-size:12px;color:var(--ct-gold);background:transparent;padding:12px 24px;border-radius:24px;cursor:pointer;letter-spacing:.06em;border:.5px solid var(--ct-gold);transition:all .15s;font-family:'DM Sans',sans-serif;}
+.ct-btn-ghost:hover{background:rgba(200,169,110,.08);}
+.ct-hero-thread{position:absolute;right:0;top:0;width:45%;height:100%;opacity:.12;pointer-events:none;}
+
+.ct-section{padding:64px 32px;border-bottom:.5px solid var(--ct-border);}
+.ct-section-label{font-size:10px;color:var(--ct-gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}
+.ct-section-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);color:var(--ct-cream);line-height:1.2;margin-bottom:16px;}
+.ct-section-body{font-size:14px;color:var(--ct-muted);line-height:1.75;max-width:600px;}
+
+.ct-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;margin-top:40px;border:.5px solid var(--ct-border);border-radius:12px;}
+.ct-step{padding:28px 24px;background:var(--ct-surface);}
+.ct-step-num{font-family:'Playfair Display',serif;font-size:32px;color:var(--ct-border);line-height:1;margin-bottom:16px;}
+.ct-step-title{font-size:13px;color:var(--ct-cream);font-weight:500;margin-bottom:8px;letter-spacing:.02em;}
+.ct-step-body{font-size:12px;color:var(--ct-muted);line-height:1.6;}
+
+.ct-countdown{display:flex;gap:24px;margin-top:32px;flex-wrap:wrap;}
+.ct-cd-unit{text-align:center;}
+.ct-cd-num{font-family:'Playfair Display',serif;font-size:40px;color:var(--ct-gold);line-height:1;}
+.ct-cd-lbl{font-size:9px;color:var(--ct-dim);letter-spacing:.12em;text-transform:uppercase;margin-top:4px;}
+
+.ct-email-form{margin-top:32px;display:flex;gap:8px;flex-wrap:wrap;max-width:480px;}
+.ct-email-input{flex:1;min-width:200px;padding:12px 16px;background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:24px;color:var(--ct-cream);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;}
+.ct-email-input::placeholder{color:var(--ct-dim);}
+.ct-email-input:focus{border-color:var(--ct-gold);}
+.ct-email-submit{padding:12px 24px;background:var(--ct-gold);color:var(--ct-bg);border:none;border-radius:24px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;letter-spacing:.06em;white-space:nowrap;transition:opacity .15s;}
+.ct-email-submit:hover{opacity:.85;}
+.ct-email-confirm{display:none;font-size:12px;color:var(--ct-gold);margin-top:10px;letter-spacing:.04em;}
+
+.ct-roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:32px;}
+.ct-role-card{background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:24px;cursor:pointer;transition:border-color .2s;}
+.ct-role-card:hover{border-color:var(--ct-gold);}
+.ct-role-card.selected{border-color:var(--ct-gold);background:rgba(200,169,110,.06);}
+.ct-role-dot{width:8px;height:8px;border-radius:50%;margin-bottom:16px;}
+.ct-role-title{font-size:14px;color:var(--ct-cream);font-weight:500;margin-bottom:8px;}
+.ct-role-desc{font-size:12px;color:var(--ct-muted);line-height:1.6;}
+
+.ct-apply-form{margin-top:24px;display:none;flex-direction:column;gap:10px;max-width:480px;}
+.ct-apply-form.visible{display:flex;}
+.ct-apply-input{padding:11px 16px;background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:8px;color:var(--ct-cream);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;}
+.ct-apply-input::placeholder{color:var(--ct-dim);}
+.ct-apply-input:focus{border-color:var(--ct-gold);}
+.ct-apply-textarea{resize:vertical;min-height:80px;padding:11px 16px;background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:8px;color:var(--ct-cream);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s;}
+.ct-apply-textarea::placeholder{color:var(--ct-dim);}
+.ct-apply-textarea:focus{border-color:var(--ct-gold);}
+.ct-apply-label{font-size:10px;color:var(--ct-dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:-4px;}
+.ct-apply-confirm{display:none;font-size:12px;color:var(--ct-gold);margin-top:4px;letter-spacing:.04em;}
+
+.ct-hourglass-viz{width:100%;height:200px;position:relative;margin:32px 0;}
+
+.ct-footer{padding:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.ct-footer-logo{font-family:'Playfair Display',serif;font-size:14px;color:var(--ct-dim);}
+.ct-footer-links{display:flex;gap:20px;}
+.ct-footer-link{font-size:11px;color:var(--ct-dim);letter-spacing:.08em;cursor:pointer;transition:color .12s;}
+.ct-footer-link:hover{color:var(--ct-gold);}
+.ct-footer-copy{font-size:10px;color:var(--ct-dim);letter-spacing:.06em;}
+
+.ct-divider{height:.5px;background:var(--ct-border);margin:0 32px;}
+
+.ct-tag{display:inline-block;font-size:9px;color:var(--ct-gold);background:rgba(200,169,110,.1);border:.5px solid rgba(200,169,110,.2);border-radius:20px;padding:3px 10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+
+/* ── MAP STYLES ── */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+#ct-wrap{width:100%;background:#111110;border-radius:12px;position:relative;font-family:'DM Sans',sans-serif;}
+#ct-map{width:100%;height:580px;position:relative;}
+#ct-canvas{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;}
+#ct-nodes{position:absolute;top:0;left:0;width:100%;height:100%;z-index:5;}
+.ct-ui{position:absolute;top:16px;left:18px;z-index:20;pointer-events:none;}
+.ct-title{font-family:'Playfair Display',serif;font-size:19px;color:#e8dcc8;letter-spacing:.02em;}
+.ct-sub{font-size:9px;color:#4a4438;letter-spacing:.14em;text-transform:uppercase;margin-top:2px;}
+.ct-node{position:absolute;transform:translate(-50%,-50%);cursor:pointer;z-index:10;}
+.ct-dot{border-radius:50%;transition:transform .15s,box-shadow .15s;position:relative;}
+.ct-dot.hub{width:14px;height:14px;background:#e8dcc8;border:2px solid #c8a96e;}
+.ct-dot.hourglass{width:8px;height:8px;background:#c8a96e;border:1px solid rgba(232,220,200,.4);}
+.ct-dot.food{width:8px;height:8px;background:#8fa86e;border:1px solid rgba(160,200,140,.4);}
+.ct-dot.drink{width:8px;height:8px;background:#6e8eb8;border:1px solid rgba(140,170,210,.4);}
+.ct-dot.donation{width:8px;height:8px;background:#b87333;border:1px solid rgba(232,180,120,.4);}
+.ct-node:hover .ct-dot,.ct-node.active .ct-dot{transform:scale(1.8);box-shadow:0 0 8px rgba(200,169,110,.6);}
+.ct-lbl{position:absolute;top:11px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:8px;color:#4a4438;pointer-events:none;letter-spacing:.04em;transition:color .12s;}
+.ct-node:hover .ct-lbl,.ct-node.active .ct-lbl{color:#c8a96e;}
+.ct-pulse{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;border:1px solid rgba(200,169,110,.25);animation:pls 2.6s ease-out infinite;pointer-events:none;}
+.ct-pulse:nth-child(2){animation-delay:.85s;}
+.ct-pulse:nth-child(3){animation-delay:1.7s;}
+@keyframes pls{0%{transform:translate(-50%,-50%) scale(1);opacity:.5;}100%{transform:translate(-50%,-50%) scale(5);opacity:0;}}
+.ct-card{position:absolute;background:#161612;border:.5px solid #2e2820;border-radius:12px;padding:15px 17px;width:215px;z-index:30;opacity:0;pointer-events:none;transition:opacity .15s;}
+.ct-card.vis{opacity:1;pointer-events:all;}
+.ct-cn{font-family:'Playfair Display',serif;font-size:13px;color:#e8dcc8;margin-bottom:2px;}
+.ct-ct{font-size:8px;color:#c8a96e;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;}
+.ct-cd{font-size:11px;color:#5a5040;line-height:1.55;margin-bottom:9px;}
+.ct-cl{font-size:10px;color:#c8a96e;display:flex;align-items:center;gap:4px;margin-bottom:3px;cursor:pointer;transition:color .1s;}
+.ct-cl:hover{color:#e8dcc8;}
+.ct-cl::before{content:'';display:block;width:3px;height:3px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.ct-ce{margin-top:7px;padding-top:7px;border-top:.5px solid #201e18;font-size:9px;color:#3a3020;}
+.ct-ce span{color:#c8a96e;}
+.ct-cx{position:absolute;top:8px;right:10px;font-size:13px;color:#2e2820;cursor:pointer;line-height:1;transition:color .1s;}
+.ct-cx:hover{color:#e8dcc8;}
+.ct-leg{position:absolute;bottom:14px;left:16px;z-index:20;display:flex;flex-direction:column;gap:5px;}
+.ct-li{display:flex;align-items:center;gap:6px;font-size:9px;color:#5a5040;letter-spacing:.06em;}
+.ct-ld{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ct-fbar{position:absolute;top:14px;right:16px;z-index:20;display:flex;flex-direction:column;gap:3px;align-items:flex-end;}
+.ct-fb{font-size:8px;color:#3a3020;letter-spacing:.08em;cursor:pointer;padding:2px 7px;border:.5px solid #2a2418;border-radius:20px;transition:all .12s;background:transparent;}
+.ct-fb:hover,.ct-fb.on{color:#c8a96e;border-color:#c8a96e;}
+
+</style>
+
+
+<div id="ct-site">
+
+<nav class="ct-nav">
+  <div class="ct-nav-logo">Common Thread</div>
+  <div class="ct-nav-links">
+    <div class="ct-nav-link">About</div>
+    <div class="ct-nav-link">The event</div>
+    <div class="ct-nav-link">Host map</div>
+    <div class="ct-nav-link">Hosts</div>
+    <div class="ct-nav-link">Contribute</div>
+  </div>
+  <div class="ct-nav-cta">Get notified</div>
+</nav>
+
+<section class="ct-hero">
+  <svg class="ct-hero-thread" viewBox="0 0 400 600" preserveAspectRatio="xMaxYMid slice">
+    <g stroke="#c8a96e" fill="none" stroke-width="0.5">
+      <path d="M400,0 Q350,100 380,200 Q410,300 370,400 Q330,500 360,600"/>
+      <path d="M380,0 Q320,120 350,240 Q380,360 340,480 Q300,580 330,600"/>
+      <path d="M360,0 Q290,140 320,280 Q350,420 310,560"/>
+      <path d="M340,50 Q270,160 300,300 Q330,440 290,580"/>
+      <path d="M320,20 Q250,150 280,300 Q310,450 270,600"/>
+      <circle cx="378" cy="180" r="3" fill="#c8a96e"/>
+      <circle cx="345" cy="310" r="2" fill="#c8a96e"/>
+      <circle cx="362" cy="420" r="3" fill="#c8a96e"/>
+      <circle cx="298" cy="260" r="2" fill="#c8a96e"/>
+      <circle cx="315" cy="480" r="2" fill="#c8a96e"/>
+    </g>
+  </svg>
+  <div class="ct-hero-eyebrow">Toronto · Summer 2025</div>
+  <h1 class="ct-hero-title">Art made<br>by <em>everyone.</em><br>Held by one thread.</h1>
+  <p class="ct-hero-sub">Common Thread is a participatory outdoor art event where every guest creates something small, contributes it to a growing collective work, and receives something in return.</p>
+  <div class="ct-hero-actions">
+    <button class="ct-btn-primary" onclick="document.getElementById('notify').scrollIntoView({behavior:'smooth'})">Get notified</button>
+    <button class="ct-btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Learn more</button>
+  </div>
+</section>
+
+<section class="ct-section" id="about">
+  <div class="ct-section-label">What is this</div>
+  <h2 class="ct-section-title">A living installation built<br>by the crowd</h2>
+  <p class="ct-section-body">Guests arrive, make a bead string at a making station, and hang it on a collective structure. The string is exchanged for food and drink vouchers. The installation grows denser throughout the day — a physical record of everyone who took part.</p>
+  <div class="ct-steps">
+    <div class="ct-step">
+      <div class="ct-step-num">01</div>
+      <div class="ct-step-title">Make</div>
+      <div class="ct-step-body">String your own beads at an artist-guided making station outside the installation.</div>
+    </div>
+    <div class="ct-step">
+      <div class="ct-step-num">02</div>
+      <div class="ct-step-title">Contribute</div>
+      <div class="ct-step-body">Hang your string on the curtain frame. Watch it become part of the growing collective work.</div>
+    </div>
+    <div class="ct-step">
+      <div class="ct-step-num">03</div>
+      <div class="ct-step-title">Receive</div>
+      <div class="ct-step-body">Exchange your string for one food voucher and one drink voucher from our sponsors.</div>
+    </div>
+    <div class="ct-step">
+      <div class="ct-step-num">04</div>
+      <div class="ct-step-title">Explore</div>
+      <div class="ct-step-body">Move through artist-led activations, eat, drink, and come back to contribute again.</div>
+    </div>
+  </div>
+</section>
+
+<section class="ct-section">
+  <div class="ct-section-label">The hourglass</div>
+  <h2 class="ct-section-title">Loading...</h2>
+  <p class="ct-section-body">Before the event, hourglasses made from recycled Toronto restaurant bottles are placed across the city. Each one holds a card with a QR code linking here. The beads inside will be used at the event. Find one near you.</p>
+  <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;">
+    <div style="background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:16px 20px;flex:1;min-width:160px;">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;color:var(--ct-gold);line-height:1;" id="host-count">20</div>
+      <div style="font-size:10px;color:var(--ct-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Host locations</div>
+    </div>
+    <div style="background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:16px 20px;flex:1;min-width:160px;">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;color:var(--ct-gold);line-height:1;">5</div>
+      <div style="font-size:10px;color:var(--ct-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Neighbourhoods</div>
+    </div>
+    <div style="background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:16px 20px;flex:1;min-width:160px;">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;color:var(--ct-gold);line-height:1;">100%</div>
+      <div style="font-size:10px;color:var(--ct-dim);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;">Recycled glass</div>
+    </div>
+  </div>
+</section>
+
+
+<section class="ct-section" id="host-map" style="padding-bottom:0;">
+  <div class="ct-section-label">The network</div>
+  <h2 class="ct-section-title">Host locations across Toronto</h2>
+  <p class="ct-section-body" style="margin-bottom:28px;">Hourglasses made from recycled restaurant bottles are placed across the city. Click any node to explore the host network.</p>
+  <div style="width:100%;border-radius:12px;border:.5px solid var(--ct-border);position:relative;">
+<div id="ct-wrap">
+<div id="ct-map">
+<canvas id="ct-canvas"></canvas>
+<div class="ct-ui"><div class="ct-title">Common Thread</div><div class="ct-sub">Host Network · Toronto 2025</div></div>
+<div class="ct-fbar" id="fbar">
+  <div class="ct-fb on" data-t="all">All</div>
+  <div class="ct-fb" data-t="hourglass">Hourglass Hosts</div>
+  <div class="ct-fb" data-t="food">Food Sponsors</div>
+  <div class="ct-fb" data-t="drink">Drink Sponsors</div>
+  <div class="ct-fb" data-t="donation">Donation Sponsors</div>
+</div>
+<div class="ct-leg">
+  <div class="ct-li"><div class="ct-ld" style="background:#e8dcc8;width:9px;height:9px;"></div>Common Thread Hub</div>
+  <div class="ct-li"><div class="ct-ld" style="background:#c8a96e;"></div>Hourglass Host</div>
+  <div class="ct-li"><div class="ct-ld" style="background:#8fa86e;"></div>Food Sponsor</div>
+  <div class="ct-li"><div class="ct-ld" style="background:#6e8eb8;"></div>Drink Sponsor</div>
+  <div class="ct-li"><div class="ct-ld" style="background:#b87333;"></div>Donation Sponsor</div>
+</div>
+<div class="ct-card" id="ct-card">
+  <div class="ct-cx" id="ct-x">×</div>
+  <div class="ct-cn" id="cn"></div>
+  <div class="ct-ct" id="ctp"></div>
+  <div class="ct-cd" id="cd"></div>
+  <div id="cl"></div>
+  <div class="ct-ce" id="ce"></div>
+</div>
+<div id="ctnodes"></div>
+</div>
+</div>
+  </div>
+</section>
+<section class="ct-section" id="notify">
+  <div class="ct-section-label">Stay in the loop</div>
+  <h2 class="ct-section-title">Be the first to know</h2>
+  <p class="ct-section-body">The event date is loading. Drop your email and we'll notify you the moment it's announced — plus early access to the host map and contributor applications.</p>
+  <div class="ct-countdown">
+    <div class="ct-cd-unit"><div class="ct-cd-num" id="cd-d">--</div><div class="ct-cd-lbl">Days</div></div>
+    <div class="ct-cd-unit"><div class="ct-cd-num" id="cd-h">--</div><div class="ct-cd-lbl">Hours</div></div>
+    <div class="ct-cd-unit"><div class="ct-cd-num" id="cd-m">--</div><div class="ct-cd-lbl">Minutes</div></div>
+    <div class="ct-cd-unit"><div class="ct-cd-num" id="cd-s">--</div><div class="ct-cd-lbl">Seconds</div></div>
+  </div>
+  <div class="ct-email-form">
+    <input class="ct-email-input" type="email" placeholder="your@email.com" id="email-input"/>
+    <button class="ct-email-submit" onclick="submitEmail()">Notify me</button>
+  </div>
+  <div class="ct-email-confirm" id="email-confirm">You're on the list. We'll be in touch.</div>
+</section>
+
+<section class="ct-section" id="contribute">
+  <div class="ct-section-label">Get involved</div>
+  <h2 class="ct-section-title">Become a contributor</h2>
+  <p class="ct-section-body">Common Thread is built by a community of artists, venues, and supporters. Select how you'd like to contribute and we'll be in touch.</p>
+  <div class="ct-roles">
+    <div class="ct-role-card" onclick="selectRole('artist')" id="role-artist">
+      <div class="ct-role-dot" style="background:#c8a96e;"></div>
+      <div class="ct-role-title">Apply as an artist</div>
+      <div class="ct-role-desc">Lead a participatory activation at the event. Open to artists working in any medium — especially beadwork, craft, drawing, and material-based practices.</div>
+    </div>
+    <div class="ct-role-card" onclick="selectRole('food')" id="role-food">
+      <div class="ct-role-dot" style="background:#8fa86e;"></div>
+      <div class="ct-role-title">Food sponsor</div>
+      <div class="ct-role-desc">Provide food at the event in exchange for branding, voucher traffic, and direct access to a highly engaged creative audience.</div>
+    </div>
+    <div class="ct-role-card" onclick="selectRole('drink')" id="role-drink">
+      <div class="ct-role-dot" style="background:#6e8eb8;"></div>
+      <div class="ct-role-title">Drink sponsor</div>
+      <div class="ct-role-desc">Supply beverages at the event. Every participant receives a drink voucher — your brand is embedded in the core participation loop.</div>
+    </div>
+    <div class="ct-role-card" onclick="selectRole('pledge')" id="role-pledge">
+      <div class="ct-role-dot" style="background:#b87333;"></div>
+      <div class="ct-role-title">Pledge support</div>
+      <div class="ct-role-desc">Support the artist program, production costs, or the Design TO winter exhibition. Donation sponsors are credited across all event materials.</div>
+    </div>
+  </div>
+  <div class="ct-apply-form" id="apply-form">
+    <div class="ct-apply-label">Your name</div>
+    <input class="ct-apply-input" type="text" placeholder="Full name" id="apply-name"/>
+    <div class="ct-apply-label">Email</div>
+    <input class="ct-apply-input" type="email" placeholder="your@email.com" id="apply-email"/>
+    <div class="ct-apply-label">Tell us about yourself</div>
+    <textarea class="ct-apply-textarea" placeholder="Share a bit about your work, business, or why you'd like to be involved..." id="apply-msg"></textarea>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="ct-btn-primary" onclick="submitApplication()" style="font-size:12px;padding:10px 20px;">Submit application</button>
+      <button class="ct-btn-ghost" onclick="closeForm()" style="font-size:12px;padding:10px 20px;">Cancel</button>
+    </div>
+    <div class="ct-apply-confirm" id="apply-confirm">Application received. We'll be in touch soon.</div>
+  </div>
+</section>
+
+<section class="ct-section">
+  <div class="ct-section-label">Design TO</div>
+  <h2 class="ct-section-title">The winter exhibition</h2>
+  <p class="ct-section-body">Following the summer event, all collective works — bead curtain sections, artist-led collaborative pieces, and the recycled glass hourglasses — are exhibited and auctioned at a Design TO winter exhibition. Proceeds support the participating artists.</p>
+  <div style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap;">
+    <div style="background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:20px 24px;flex:1;min-width:200px;">
+      <div style="font-size:11px;color:var(--ct-gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Summer event</div>
+      <div style="font-size:13px;color:var(--ct-cream);line-height:1.6;">Collective works are made by hundreds of participants over a single day in an outdoor park.</div>
+    </div>
+    <div style="background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:20px 24px;flex:1;min-width:200px;">
+      <div style="font-size:11px;color:var(--ct-gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Winter exhibition</div>
+      <div style="font-size:13px;color:var(--ct-cream);line-height:1.6;">Works are exhibited at a Design TO venue. Silent auction with proceeds to artists and community causes.</div>
+    </div>
+    <div style="background:var(--ct-surface);border:.5px solid var(--ct-border);border-radius:12px;padding:20px 24px;flex:1;min-width:200px;">
+      <div style="font-size:11px;color:var(--ct-gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Ongoing</div>
+      <div style="font-size:13px;color:var(--ct-cream);line-height:1.6;">Bead curtain sections are installed in participating restaurants as permanent art, connected to the host network.</div>
+    </div>
+  </div>
+</section>
+
+<footer class="ct-footer">
+  <div class="ct-footer-logo">Common Thread · Toronto</div>
+  <div class="ct-footer-links">
+    <div class="ct-footer-link">Instagram</div>
+    <div class="ct-footer-link">Contact</div>
+    <div class="ct-footer-link">Press</div>
+  </div>
+  <div class="ct-footer-copy">© 2025 Common Thread</div>
+</footer>
+
+</div>
+
+
+<script>
+
+function submitEmail(){
+  const v=document.getElementById('email-input').value;
+  if(!v||!v.includes('@'))return;
+  document.getElementById('email-input').value='';
+  document.getElementById('email-confirm').style.display='block';
+  setTimeout(()=>document.getElementById('email-confirm').style.display='none',4000);
+}
+
+let selectedRole=null;
+function selectRole(role){
+  document.querySelectorAll('.ct-role-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('role-'+role).classList.add('selected');
+  selectedRole=role;
+  const form=document.getElementById('apply-form');
+  form.classList.add('visible');
+  form.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('apply-confirm').style.display='none';
+}
+
+function closeForm(){
+  document.getElementById('apply-form').classList.remove('visible');
+  document.querySelectorAll('.ct-role-card').forEach(c=>c.classList.remove('selected'));
+  selectedRole=null;
+}
+
+function submitApplication(){
+  const n=document.getElementById('apply-name').value;
+  const e=document.getElementById('apply-email').value;
+  if(!n||!e)return;
+  document.getElementById('apply-name').value='';
+  document.getElementById('apply-email').value='';
+  document.getElementById('apply-msg').value='';
+  document.getElementById('apply-confirm').style.display='block';
+  setTimeout(()=>{
+    document.getElementById('apply-confirm').style.display='none';
+    closeForm();
+  },3000);
+}
+
+const eventDate=new Date('2025-07-19T12:00:00');
+function updateCountdown(){
+  const now=new Date();
+  const diff=eventDate-now;
+  if(diff<=0){
+    document.getElementById('cd-d').textContent='00';
+    document.getElementById('cd-h').textContent='00';
+    document.getElementById('cd-m').textContent='00';
+    document.getElementById('cd-s').textContent='00';
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+document.querySelector('.ct-nav-cta').addEventListener('click',()=>{
+  document.getElementById('notify').scrollIntoView({behavior:'smooth'});
+});
+document.querySelectorAll('.ct-nav-link').forEach((l,i)=>{
+  const targets=['about','about','host-map','notify','contribute'];
+  l.addEventListener('click',()=>{
+    const el=document.getElementById(targets[i]);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+
+// ── MAP ──────────────────────────────────────────────────────────────────────
+(function(){
+const LAT_MIN=43.627,LAT_MAX=43.693,LNG_MIN=-79.468,LNG_MAX=-79.325;
+
+const typeLabels={hourglass:'Hourglass Host',food:'Food Sponsor',drink:'Drink Sponsor',donation:'Donation Sponsor'};
+
+const nodes=[
+  {id:0,hub:true,label:'Common Thread',lat:43.6467,lng:-79.4186,type:'hub',desc:'The central node connecting all hosts and sponsors across Toronto.',links:[],event:null,connections:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
+  {id:1,label:'Bar Raval',lat:43.6492,lng:-79.4228,type:'hourglass',desc:'Iconic pintxos and vermouth bar on College St. Wine and vermouth bottle contributor.',links:[{t:'Website',u:'https://www.barraval.ca'},{t:'Instagram',u:'#'}],event:{t:'Late Night Pintxos',d:'May 16'},connections:[2,3,13]},
+  {id:2,label:'Civil Liberties',lat:43.6479,lng:-79.4310,type:'hourglass',desc:'Natural wine bar on Dundas W. Primary green and amber bottle source.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:{t:'Natural Wine Night',d:'May 22'},connections:[3,4,13]},
+  {id:3,label:'Handlebar',lat:43.6495,lng:-79.4275,type:'hourglass',desc:'Beloved dive bar on Dundas W. Beer bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[1,2,13]},
+  {id:4,label:'Superpoint',lat:43.6472,lng:-79.4301,type:'hourglass',desc:'Pasta and natural wine on Dundas W. Heavy green glass contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:{t:'Pasta Sunday',d:'May 18'},connections:[2,5,13]},
+  {id:5,label:'Parallel',lat:43.6509,lng:-79.4264,type:'hourglass',desc:'Modern Middle Eastern on Ossington. Soju and beer bottle collector.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[1,4,7]},
+  {id:6,label:'The Drake Hotel',lat:43.6432,lng:-79.4243,type:'hourglass',desc:'Iconic Queen W hotel bar and restaurant. Mixed bottle contributor.',links:[{t:'Website',u:'https://thedrakehotel.ca'},{t:'Instagram',u:'#'}],event:{t:'Art Opening',d:'Jun 1'},connections:[7,8,10]},
+  {id:7,label:'Reposado',lat:43.6441,lng:-79.4189,type:'hourglass',desc:'Tequila bar on Ossington. Amber and clear spirit bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[5,6,12]},
+  {id:8,label:'Café Cancan',lat:43.6456,lng:-79.4352,type:'hourglass',desc:'French café on Roncesvalles. Champagne and wine bottle collector.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[6,9]},
+  {id:9,label:'Roncy Beers',lat:43.6463,lng:-79.4471,type:'hourglass',desc:'Neighbourhood bar on Roncesvalles. Beer bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[8]},
+  {id:10,label:'Forno Cultura',lat:43.6444,lng:-79.4028,type:'hourglass',desc:'Artisan bakery on King W. Wine bottles from evening events.',links:[{t:'Website',u:'https://fornocultura.com'},{t:'Instagram',u:'#'}],event:null,connections:[6,11,12]},
+  {id:11,label:'Oretta',lat:43.6431,lng:-79.3998,type:'hourglass',desc:'Italian on King W. Wine bottle and Murano bead connection.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:{t:'Pasta Night',d:'Jun 4'},connections:[10,12]},
+  {id:12,label:'BarChef',lat:43.6479,lng:-79.4005,type:'hourglass',desc:'Craft cocktail bar on Queen W. Premium spirit bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:{t:'Cocktail Pairing',d:'May 29'},connections:[7,10,11,15]},
+  {id:13,label:'Hanmoto',lat:43.6491,lng:-79.4188,type:'hourglass',desc:'Izakaya on Dundas W. Sake, soju and beer bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[1,2,3,4]},
+  {id:14,label:'Reunion Island',lat:43.6637,lng:-79.4103,type:'hourglass',desc:'Community coffee roaster in the Annex.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[15]},
+  {id:15,label:'Communist Daughter',lat:43.6552,lng:-79.4216,type:'hourglass',desc:'Tiny Ossington bar. Whiskey and beer bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[12,14,5]},
+  // Drink sponsors
+  {id:16,label:'Mill Street Brewery',lat:43.6503,lng:-79.3598,type:'drink',desc:'Distillery District brewery. Official drink sponsor providing craft beer at the event.',links:[{t:'Website',u:'https://millstreetbrewery.com'},{t:'Instagram',u:'#'}],event:{t:'Brew Tour',d:'Jun 7'},connections:[17,19]},
+  {id:17,label:'Eastbound Brewing',lat:43.6629,lng:-79.3401,type:'drink',desc:'East end craft brewery. Drink sponsor and amber bottle contributor.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:{t:'Tap Takeover',d:'May 25'},connections:[16]},
+  // Food sponsors
+  {id:18,label:'Cluny Bistro',lat:43.6497,lng:-79.3591,type:'food',desc:'Distillery District bistro. Food sponsor providing French-inspired bites at the event.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[16,19]},
+  {id:19,label:'Farside',lat:43.6641,lng:-79.3387,type:'food',desc:'East end bar and kitchen. Food sponsor for the event.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:null,connections:[17]},
+  // Donation sponsor
+  {id:20,label:'Bellevue',lat:43.6553,lng:-79.4011,type:'donation',desc:'Kensington Market natural wine bar. Donation sponsor supporting the artist program.',links:[{t:'Website',u:'#'},{t:'Instagram',u:'#'}],event:{t:'Wine Tasting',d:'May 30'},connections:[12,15]},
+];
+
+const streets={
+  ew:[
+    {name:'Bloor St',lat:43.6696,dashes:false},
+    {name:'College St',lat:43.6577,dashes:false},
+    {name:'Dundas St W',lat:43.6485,dashes:false},
+    {name:'Queen St W',lat:43.6441,dashes:false},
+    {name:'King St W',lat:43.6434,dashes:true},
+    {name:'Front St',lat:43.6447,dashes:true},
+  ],
+  ns:[
+    {name:'Roncesvalles',lng:-79.4505,dashes:false},
+    {name:'Dufferin',lng:-79.4334,dashes:false},
+    {name:'Ossington',lng:-79.4228,dashes:false},
+    {name:'Bathurst',lng:-79.4004,dashes:false},
+    {name:'Spadina',lng:-79.3997,dashes:true},
+    {name:'Yonge',lng:-79.3832,dashes:false},
+    {name:'Parliament',lng:-79.3601,dashes:true},
+    {name:'Broadview',lng:-79.3521,dashes:false},
+    {name:'Pape',lng:-79.3401,dashes:true},
+  ]
+};
+
+const nbhoods=[
+  {label:'Roncesvalles',lat:43.6460,lng:-79.4510},
+  {label:'Ossington',lat:43.6520,lng:-79.4270},
+  {label:'Trinity Bellwoods',lat:43.6450,lng:-79.4170},
+  {label:'Queen West',lat:43.6442,lng:-79.4050},
+  {label:'Kensington',lat:43.6560,lng:-79.4020},
+  {label:'King West',lat:43.6435,lng:-79.3960},
+  {label:'Distillery',lat:43.6498,lng:-79.3580},
+  {label:'The Annex',lat:43.6660,lng:-79.4050},
+  {label:'Leslieville',lat:43.6640,lng:-79.3380},
+  {label:'Parkdale',lat:43.6430,lng:-79.4390},
+];
+
+const mapEl=document.getElementById('ct-map');
+const canvas=document.getElementById('ct-canvas');
+const ctx=canvas.getContext('2d');
+const nodesEl=document.getElementById('ctnodes');
+const card=document.getElementById('ct-card');
+let W,H,af=0,activeId=null,filterType='all';
+
+function toXY(lat,lng){
+  return{x:((lng-LNG_MIN)/(LNG_MAX-LNG_MIN))*W,y:((LAT_MAX-lat)/(LAT_MAX-LAT_MIN))*H};
+}
+
+function resize(){
+  W=mapEl.offsetWidth;H=580;
+  canvas.width=W;canvas.height=H;
+  buildNodes();
+}
+
+const dotColors={hourglass:'#c8a96e',food:'#8fa86e',drink:'#6e8eb8',donation:'#b87333',hub:'#e8dcc8'};
+
+function drawMap(){
+  ctx.clearRect(0,0,W,H);
+  af+=0.005;
+
+  const lakeY=toXY(43.633,0).y;
+  ctx.fillStyle='#0d1318';
+  ctx.fillRect(0,lakeY,W,H-lakeY);
+  ctx.fillStyle='#1a2530';
+  ctx.font='9px DM Sans';
+  ctx.fillText('Lake Ontario',W/2-32,lakeY+20);
+
+  const nbFills=[
+    {lat1:43.640,lat2:43.656,lng1:-79.468,lng2:-79.440,color:'rgba(180,120,50,.04)'},
+    {lat1:43.643,lat2:43.657,lng1:-79.440,lng2:-79.415,color:'rgba(180,130,60,.05)'},
+    {lat1:43.640,lat2:43.655,lng1:-79.415,lng2:-79.392,color:'rgba(150,120,80,.04)'},
+    {lat1:43.649,lat2:43.662,lng1:-79.415,lng2:-79.392,color:'rgba(100,130,100,.04)'},
+    {lat1:43.643,lat2:43.654,lng1:-79.368,lng2:-79.352,color:'rgba(60,90,130,.05)'},
+    {lat1:43.659,lat2:43.672,lng1:-79.420,lng2:-79.395,color:'rgba(100,90,130,.04)'},
+    {lat1:43.659,lat2:43.670,lng1:-79.350,lng2:-79.330,color:'rgba(80,110,80,.05)'},
+  ];
+  nbFills.forEach(nb=>{
+    const p1=toXY(nb.lat2,nb.lng1),p2=toXY(nb.lat1,nb.lng2);
+    ctx.fillStyle=nb.color;
+    ctx.fillRect(p1.x,p1.y,p2.x-p1.x,p2.y-p1.y);
+  });
+
+  streets.ew.forEach(s=>{
+    if(s.lat<LAT_MIN||s.lat>LAT_MAX)return;
+    const y=toXY(s.lat,0).y;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);
+    ctx.setLineDash(s.dashes?[4,8]:[]);
+    ctx.strokeStyle=s.dashes?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.09)';
+    ctx.lineWidth=s.dashes?.5:.8;ctx.stroke();
+    if(!s.dashes){ctx.setLineDash([]);ctx.fillStyle='rgba(255,255,255,0.18)';ctx.font='8px DM Sans';ctx.fillText(s.name,4,y-3);}
+  });
+
+  streets.ns.forEach(s=>{
+    if(s.lng<LNG_MIN||s.lng>LNG_MAX)return;
+    const x=toXY(0,s.lng).x;
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);
+    ctx.setLineDash(s.dashes?[4,8]:[]);
+    ctx.strokeStyle=s.dashes?'rgba(255,255,255,0.04)':'rgba(255,255,255,0.09)';
+    ctx.lineWidth=s.dashes?.5:.8;ctx.stroke();
+    if(!s.dashes){ctx.setLineDash([]);ctx.save();ctx.translate(x+3,H-8);ctx.fillStyle='rgba(255,255,255,0.18)';ctx.font='8px DM Sans';ctx.fillText(s.name,0,0);ctx.restore();}
+  });
+  ctx.setLineDash([]);
+
+  nbhoods.forEach(n=>{
+    const p=toXY(n.lat,n.lng);
+    ctx.fillStyle='rgba(255,255,255,0.06)';
+    ctx.font='8px DM Sans';
+    ctx.fillText(n.label.toUpperCase(),p.x,p.y);
+  });
+
+  // Node-to-node connections
+  nodes.forEach(node=>{
+    if(!node.connections)return;
+    const p1=toXY(node.lat,node.lng);
+    node.connections.forEach(cid=>{
+      if(cid<=node.id)return;
+      const other=nodes[cid];
+      if(!other)return;
+      if(filterType!=='all'&&node.type!==filterType&&other.type!==filterType&&node.type!=='hub'&&other.type!=='hub')return;
+      const p2=toXY(other.lat,other.lng);
+      const isActive=activeId===node.id||activeId===cid;
+      const t=(Math.sin(af+node.id*.7+cid*.3)+1)/2;
+      const col=isActive?dotColors[node.type]||'#c8a96e':'rgba(200,169,110,1)';
+      ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
+      ctx.strokeStyle=isActive?col.replace(')',',0.6)').replace('rgb','rgba')||'rgba(200,169,110,0.5)':`rgba(200,169,110,${0.04+t*.05})`;
+      ctx.lineWidth=isActive?1.2:.5;ctx.stroke();
+      if(isActive){
+        const bt=((af*.4+node.id*.2+cid*.1)%1);
+        ctx.beginPath();ctx.arc(p1.x+(p2.x-p1.x)*bt,p1.y+(p2.y-p1.y)*bt,2,0,Math.PI*2);
+        ctx.fillStyle='rgba(232,220,200,0.8)';ctx.fill();
+      }
+    });
+  });
+
+  // Hub threads
+  const hub=nodes[0],hubP=toXY(hub.lat,hub.lng);
+  nodes.slice(1).forEach((node,i)=>{
+    if(filterType!=='all'&&node.type!==filterType)return;
+    const p=toXY(node.lat,node.lng);
+    const isActive=activeId===node.id||activeId===0;
+    const t=(Math.sin(af+i*.9)+1)/2;
+    const cpx=(hubP.x+p.x)/2+Math.sin(af*.3+i*1.1)*18;
+    const cpy=(hubP.y+p.y)/2+Math.cos(af*.25+i*.8)*18;
+    ctx.beginPath();ctx.moveTo(hubP.x,hubP.y);ctx.quadraticCurveTo(cpx,cpy,p.x,p.y);
+    ctx.strokeStyle=isActive?'rgba(232,220,200,0.6)':`rgba(200,169,110,${0.03+t*.05})`;
+    ctx.lineWidth=isActive?1:.4;ctx.stroke();
+    const bt=((af*.25+i*.12)%1);
+    const bx=hubP.x+(p.x-hubP.x)*bt+(cpx-(hubP.x+p.x)/2)*bt*(1-bt)*2;
+    const by=hubP.y+(p.y-hubP.y)*bt+(cpy-(hubP.y+p.y)/2)*bt*(1-bt)*2;
+    ctx.beginPath();ctx.arc(bx,by,isActive?2:1.2,0,Math.PI*2);
+    ctx.fillStyle=isActive?'rgba(232,220,200,0.9)':`rgba(200,169,110,${0.2+t*.3})`;ctx.fill();
+  });
+
+  requestAnimationFrame(drawMap);
+}
+
+function buildNodes(){
+  nodesEl.innerHTML='';
+  nodes.forEach(node=>{
+    const{x,y}=toXY(node.lat,node.lng);
+    const el=document.createElement('div');
+    el.className='ct-node';
+    el.style.left=x+'px';el.style.top=y+'px';
+    el.dataset.id=node.id;el.dataset.type=node.type;
+    const pulse=node.hub?'<div class="ct-pulse"></div><div class="ct-pulse"></div><div class="ct-pulse"></div>':'';
+    el.innerHTML=`${pulse}<div class="ct-dot ${node.hub?'hub':node.type}"></div><div class="ct-lbl">${node.label}</div>`;
+    el.addEventListener('click',e=>{e.stopPropagation();showCard(node,x,y);});
+    nodesEl.appendChild(el);
+  });
+}
+
+function showCard(node,x,y){
+  document.querySelectorAll('.ct-node').forEach(n=>n.classList.remove('active'));
+  document.querySelector(`.ct-node[data-id="${node.id}"]`).classList.add('active');
+  activeId=node.id;
+  document.getElementById('cn').textContent=node.label;
+  document.getElementById('ctp').textContent=(typeLabels[node.type]||'Hub');
+  document.getElementById('cd').textContent=node.desc;
+  document.getElementById('cl').innerHTML=node.links.map(l=>`<div class="ct-cl" onclick="window.open('${l.u}','_blank')">${l.t}</div>`).join('');
+  const ce=document.getElementById('ce');
+  ce.innerHTML=node.event?`Upcoming: <span>${node.event.t} · ${node.event.d}</span>`:'';
+  let cx=x+12,cy=y-10;
+  if(cx+220>W)cx=x-228;
+  if(cy+170>H)cy=H-178;
+  if(cy<0)cy=8;
+  card.style.left=cx+'px';card.style.top=cy+'px';
+  card.classList.add('vis');
+}
+
+document.getElementById('ct-x').addEventListener('click',()=>{
+  card.classList.remove('vis');activeId=null;
+  document.querySelectorAll('.ct-node').forEach(n=>n.classList.remove('active'));
+});
+document.getElementById('ct-map').addEventListener('click',()=>{
+  card.classList.remove('vis');activeId=null;
+  document.querySelectorAll('.ct-node').forEach(n=>n.classList.remove('active'));
+});
+document.getElementById('fbar').addEventListener('click',e=>{
+  if(!e.target.dataset.t)return;
+  filterType=e.target.dataset.t;
+  document.querySelectorAll('.ct-fb').forEach(b=>b.classList.remove('on'));
+  e.target.classList.add('on');
+  document.querySelectorAll('.ct-node').forEach(n=>{
+    n.style.opacity=(filterType==='all'||n.dataset.type===filterType||n.dataset.type==='hub')?'1':'0.1';
+  });
+});
+
+resize();
+window.addEventListener('resize',resize);
+drawMap();
+requestAnimationFrame(function(){ requestAnimationFrame(function(){ resize(); }); });
+})();
+</script>
